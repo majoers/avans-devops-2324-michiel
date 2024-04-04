@@ -1,0 +1,15 @@
+FROM node:20
+
+WORKDIR /api
+
+COPY . /api
+
+ENV PORT=12345
+ENV HOST=Mongo-Database
+ENV MONGO_URL=mongodb://Mongo-Database:27017
+
+EXPOSE 12345
+
+RUN npm install
+
+CMD [ "npm", "start" ]

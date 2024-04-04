@@ -1,0 +1,20 @@
+#Stage 1: Compile and Build angular codebase
+FROM node:16 as build
+
+WORKDIR /usr/local/app
+
+COPY ./ /usr/local/app/
+
+RUN npm install
+
+RUN npm install -g @angular/cli@16.1.0
+
+RUN npm run build
+
+#Stage 2: Serve app with nginx server
+
+FROM nginx:latest
+
+COPY --from=build /usr/local/app/dist/angular-front-end /usr/share/nginx/html
+
+EXPOSE 80

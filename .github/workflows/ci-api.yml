@@ -1,0 +1,38 @@
+name: api ci
+
+on: 
+  push:
+    paths:
+      - 'api/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-build-test-code-coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    defaults:
+      run:
+        working-directory: ./api
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: api/package-lock.json
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm run lint .
+    - name: create coverage report
+      uses: ArtiomTr/jest-coverage-report-action@v2
+      with:
+        working-directory: ./api
+    - name: Run Tests
+      run: npm test

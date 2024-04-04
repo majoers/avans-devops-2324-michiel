@@ -1,0 +1,12 @@
+<h1>Add a user</h1>
+
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+    <label for="userFirstName">First Name: </label>
+    <input id="userFirstName" type="text" formControlName="userFirstName">
+  
+    <label for="userLastName">Last Name: </label>
+    <input id="userLastName" type="text" formControlName="userLastName">
+  
+    <button type="submit" [disabled]="!userForm.valid" >Submit</button>
+  </form>

@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  angular-front-end:
+    build: 
+      context: ./angular-front-end
+      target: build
+    ports:
+      - ${FRONT_END_PORT}:8080
+    volumes:
+      - ./angular-front-end:/usr/local/app
+    restart: always  
+    command: > 
+      sh -c "${COMMAND}"
+  express-app:
+    build: ./api
+    environment:
+      DB_NAME: ${DB_NAME}
+      HOST: mongodbengine
+      MONGO_URL: mongodb://${MONGODB_ADMINUSERNAME}:${MONGODB_ADMINPASSWORD}@mongodbengine:27017
+    volumes:
+      - ./api:/app 
+    ports:
+      - ${API_PORT}:12345
+    depends_on:
+      - mongodbengine
+    networks:
+      - mynetwork
+
+  mongodbengine:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ADMINUSERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ADMINPASSWORD}
+    restart: always  
+    volumes:
+      - ./db/data:/data/db
+      - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+        - mynetwork
+    
+  mongo-express:
+    image: mongo-express
+    depends_on:
+      - mongodbengine
+    restart: always
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_BASICAUTH_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_BASICAUTH_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_ADMINUSERNAME}:${MONGODB_ADMINPASSWORD}@mongodbengine:27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ADMINUSERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ADMINPASSWORD}
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
