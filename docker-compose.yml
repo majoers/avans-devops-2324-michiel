@@ -6,7 +6,7 @@ services:
       context: ./angular-front-end
       target: build
     ports:
-      - ${FRONT_END_PORT}:8080
+      - '${FRONT_END_PORT}:8080'
     volumes:
       - ./angular-front-end:/usr/local/app
     restart: always  
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./api:/app 
     ports:
-      - ${API_PORT}:12345
+      - '${API_PORT}:12345'
     depends_on:
       - mongodbengine
     networks:
