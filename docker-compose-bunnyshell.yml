@@ -11,13 +11,13 @@ services:
       - ./angular-front-end:/usr/local/app
     restart: always  
     command: > 
-      sh -c '{{ COMMAND }}'
+      sh -c '{{ env.vars.COMMAND }}'
   express-app:
     build: ./api
     environment:
-      DB_NAME: '{{ DB_NAME }}' 
+      DB_NAME: '{{ env.vars.DB_NAME }}' 
       HOST: mongodbengine
-      MONGO_URL: mongodb://{{ MONGODB_ADMINUSERNAME }}:{{ MONGODB_ADMINPASSWORD }}@mongodbengine:27017
+      MONGO_URL: mongodb://{{ env.vars.MONGODB_ADMINUSERNAME }}:{{ env.varsMONGODB_ADMINPASSWORD }}@mongodbengine:27017
     volumes:
       - ./api:/app 
     ports:
@@ -30,8 +30,8 @@ services:
   mongodbengine:
     image: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME: '{{ MONGODB_ADMINUSERNAME }}'
-      MONGO_INITDB_ROOT_PASSWORD: '{{ MONGODB_ADMINPASSWORD }}'
+      MONGO_INITDB_ROOT_USERNAME: '{{ env.vars.MONGODB_ADMINUSERNAME }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ env.vars.MONGODB_ADMINPASSWORD }}'
     restart: always  
     volumes:
       - ./db/data:/data/db
@@ -45,11 +45,11 @@ services:
       - mongodbengine
     restart: always
     environment:
-      ME_CONFIG_BASICAUTH_USERNAME: '{{ MONGO_BASICAUTH_USERNAME }}'
-      ME_CONFIG_BASICAUTH_PASSWORD: '{{ MONGO_BASICAUTH_PASSWORD }}'
-      ME_CONFIG_MONGODB_URL: mongodb://{{ MONGODB_ADMINUSERNAME }}:{{ MONGODB_ADMINPASSWORD }}@mongodbengine:27017
-      ME_CONFIG_MONGODB_ADMINUSERNAME: '{{ MONGODB_ADMINUSERNAME }}'
-      ME_CONFIG_MONGODB_ADMINPASSWORD: '{{ MONGODB_ADMINPASSWORD }}'
+      ME_CONFIG_BASICAUTH_USERNAME: '{{ env.vars.MONGO_BASICAUTH_USERNAME }}'
+      ME_CONFIG_BASICAUTH_PASSWORD: '{{ env.vars.MONGO_BASICAUTH_PASSWORD }}'
+      ME_CONFIG_MONGODB_URL: mongodb://{{ env.vars.MONGODB_ADMINUSERNAME }}:{{ env.vars.MONGODB_ADMINPASSWORD }}@mongodbengine:27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: '{{ env.vars.MONGODB_ADMINUSERNAME }}'
+      ME_CONFIG_MONGODB_ADMINPASSWORD: '{{ env.vars.MONGODB_ADMINPASSWORD }}'
     networks:
       - mynetwork
 
