@@ -16,7 +16,7 @@ services:
 
   angular-front-end:
     build: 
-      dockerfile: ./angular-front-end/dockerfile.prod
+      dockerfile: ./angular-front-end/Dockerfile.prod
       context: ./angular-front-end
       target: build
     ports:
