@@ -17,7 +17,7 @@ services:
     environment:
       DB_NAME: '{{ env.vars.DB_NAME }}' 
       HOST: mongodbengine
-      MONGO_URL: mongodb://{{ env.vars.MONGODB_ADMINUSERNAME }}:{{ env.varsMONGODB_ADMINPASSWORD }}@mongodbengine:27017
+      MONGO_URL: mongodb://{{ env.vars.MONGODB_ADMINUSERNAME }}:{{ env.vars.MONGODB_ADMINPASSWORD }}@mongodbengine:27017
     volumes:
       - ./api:/app 
     ports:
