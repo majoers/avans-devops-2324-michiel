@@ -16,6 +16,7 @@ services:
 
   angular-front-end:
     build: 
+      dockerfile: ./angular-front-end/dockerfile.prod
       context: ./angular-front-end
       target: build
     ports:
@@ -23,8 +24,8 @@ services:
     volumes:
       - ./angular-front-end:/usr/local/app
     restart: always  
-    command: > 
-      sh -c 'ng serve --configuration=production --host 0.0.0.0 --port 8080 --poll 1000'
+  #  command: > 
+  #    sh -c 'ng build --configuration=production;npx http-server -p 8080 -c-1 dist/angular-front-end'
   
   nginx-reverse-proxy:
     image: nginx:latest
