@@ -11,7 +11,7 @@ services:
       - ./angular-front-end:/usr/local/app
     restart: always  
     command: > 
-      sh -c "ng serve --configuration=production --host 0.0.0.0 --port 8080 --poll 1000"
+      sh -c 'ng serve --configuration=production --host 0.0.0.0 --port 8080 --poll 1000'
   express-app:
     build: ./api
     environment:
