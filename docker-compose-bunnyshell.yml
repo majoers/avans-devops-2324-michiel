@@ -6,22 +6,22 @@ services:
       context: ./angular-front-end
       target: build
     ports:
-      - '{{env.var.FRONT_END_PORT}}:8080'
+      - '{{ env.var.FRONT_END_PORT }}:8080'
     volumes:
       - ./angular-front-end:/usr/local/app
     restart: always  
     command: > 
-      sh -c "${COMMAND}"
+      sh -c '{{ env.var.COMMAND}'
   express-app:
     build: ./api
     environment:
-      DB_NAME: ${DB_NAME}
+      DB_NAME: {{ env.var.DB_NAME }} 
       HOST: mongodbengine
-      MONGO_URL: mongodb://${MONGODB_ADMINUSERNAME}:${MONGODB_ADMINPASSWORD}@mongodbengine:27017
+      MONGO_URL: mongodb://{{ env.var.MONGODB_ADMINUSERNAME }}:{{ env.var.MONGODB_ADMINPASSWORD }}@mongodbengine:27017
     volumes:
       - ./api:/app 
     ports:
-      - '${API_PORT}:12345'
+      - '{{ env.var.API_PORT }}:12345'
     depends_on:
       - mongodbengine
     networks:
@@ -30,8 +30,8 @@ services:
   mongodbengine:
     image: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ADMINUSERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ADMINPASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: {{ env.var.MONGODB_ADMINUSERNAME }}
+      MONGO_INITDB_ROOT_PASSWORD: {{ env.var.MONGODB_ADMINPASSWORD }}
     restart: always  
     volumes:
       - ./db/data:/data/db
@@ -45,11 +45,11 @@ services:
       - mongodbengine
     restart: always
     environment:
-      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_BASICAUTH_USERNAME}
-      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_BASICAUTH_PASSWORD}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_ADMINUSERNAME}:${MONGODB_ADMINPASSWORD}@mongodbengine:27017
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ADMINUSERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ADMINPASSWORD}
+      ME_CONFIG_BASICAUTH_USERNAME: {{ env.var.MONGO_BASICAUTH_USERNAME }} 
+      ME_CONFIG_BASICAUTH_PASSWORD: {{ env.var.MONGO_BASICAUTH_PASSWORD }}
+      ME_CONFIG_MONGODB_URL: mongodb://{{ env.var.MONGODB_ADMINUSERNAME }}:{{ env.var.MONGODB_ADMINPASSWORD }}@mongodbengine:27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: {{ env.var.MONGODB_ADMINUSERNAME }}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: {{ env.var.MONGODB_ADMINPASSWORD }}
     networks:
       - mynetwork
 
