@@ -15,7 +15,7 @@ services:
   express-app:
     build: ./api
     environment:
-      DB_NAME: {{ env.var.DB_NAME }} 
+      DB_NAME: '{{ env.var.DB_NAME }}' 
       HOST: mongodbengine
       MONGO_URL: mongodb://{{ env.var.MONGODB_ADMINUSERNAME }}:{{ env.var.MONGODB_ADMINPASSWORD }}@mongodbengine:27017
     volumes:
