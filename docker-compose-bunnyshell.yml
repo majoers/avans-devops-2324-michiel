@@ -11,7 +11,7 @@ services:
       - ./angular-front-end:/usr/local/app
     restart: always  
     command: > 
-      sh -c '{{ env.var.COMMAND}'
+      sh -c '{{ env.var.COMMAND }}'
   express-app:
     build: ./api
     environment:
