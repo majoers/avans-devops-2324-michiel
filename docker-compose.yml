@@ -14,8 +14,6 @@ services:
       sh -c "${COMMAND}"
   express-app:
     build: ./api
-    env_file:
-      - .env
     environment:
       DB_NAME: ${DB_NAME}
       HOST: mongodbengine
